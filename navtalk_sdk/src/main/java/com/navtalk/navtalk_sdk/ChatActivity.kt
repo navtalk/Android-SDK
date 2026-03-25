@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.navtalk.navtalk_sdk.SingleClass.SocketStatus
 import com.navtalk.navtalk_sdk.SingleClass.WebsocketManager
+import com.navtalk.navtalk_sdk.SingleClass.WebsocketManager.appContext
 import com.navtalk.navtalk_sdk.audio.RecordAudioManager
 import es.dmoral.toasty.Toasty
 import okhttp3.Call
@@ -45,8 +46,17 @@ class ChatActivity : AppCompatActivity() {
     lateinit var remote_RenderCiew: SurfaceViewRenderer
     private var isCkeckWebSocketStatus: Boolean = true
 
+    //使用回调+单例/对象方法
+    companion object {
+        var instance: ChatActivity? = null
+        fun closeCall() {
+            instance?.clickCallButton()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
         enableEdgeToEdge()
         setContentView(R.layout.chat_activity)
         initUI()
@@ -258,7 +268,9 @@ class ChatActivity : AppCompatActivity() {
             messagesListView.visibility = View.INVISIBLE
         }
         NotificationCenter.observe("RecieveFunctionCall"){ data ->
-            recieveFunctionCall(data as String)
+            //recieveFunctionCall(data as String)
+            //回调给 SDK 外部
+            NavTalkManager.functionCallListener?.onFunctionCalled(data as String)
         }
         NotificationCenter.observe("ChangeCameraStatus"){ data ->
             changeCameraStatus()
@@ -603,9 +615,23 @@ class ChatActivity : AppCompatActivity() {
             if (CameraCaptureManager.currentCameraStatus == CameraStatus.OPENED){
                 CameraCaptureManager.release()
             }
+            //清空数据
+            NavTalkManager.avatar_image_url = ""
+            NavTalkManager.avatar_provider_type = ""
+            //根据设置决定是否清空历史数据
+            if (NavTalkManager.isOrNotSaveHistoryChatMessages == false){
+                WebsocketManager.allUserAndAIMessages.clear()
+            }
             //返回上一页
             finish()
         }else{
+            //清空数据
+            NavTalkManager.avatar_image_url = ""
+            NavTalkManager.avatar_provider_type = ""
+            //根据设置决定是否清空历史数据
+            if (NavTalkManager.isOrNotSaveHistoryChatMessages == false){
+                WebsocketManager.allUserAndAIMessages.clear()
+            }
             //返回上一页
             finish()
         }

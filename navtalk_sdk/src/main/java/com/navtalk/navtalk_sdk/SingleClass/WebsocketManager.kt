@@ -167,6 +167,7 @@ object WebsocketManager{
     //4.1.发送函数：
     fun sendFunctionCall(){
         //(1).构建参数数据：Functions
+        /*
         val functions = listOf(
             mapOf(
                 "type" to "function",
@@ -185,10 +186,14 @@ object WebsocketManager{
             )
         )
         val functionsJsonString = org.json.JSONObject(mapOf("functions" to functions)).getJSONArray("functions").toString()
+       */
+        if (NavTalkManager.functionsJsonString.count() <= 0){
+            return
+        }
         //(2).构建Message
         val message = mapOf(
             "type" to "realtime.input_function_call",
-            "data" to mapOf("content" to functionsJsonString)
+            "data" to mapOf("content" to NavTalkManager.functionsJsonString)
         )
         val messageJsonString = org.json.JSONObject(message).toString()
         //(3).发送Message

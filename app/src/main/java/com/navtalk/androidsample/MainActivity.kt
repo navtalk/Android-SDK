@@ -1,6 +1,5 @@
 package com.navtalk.androidsample;
 import android.app.Activity;
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,6 +7,8 @@ import android.widget.Button
 import android.graphics.Color
 import android.view.WindowInsetsController
 import androidx.core.view.WindowCompat
+import FunctionCallListener
+import org.json.JSONObject
 
 // MainActivity 继承 Activity，表示这是一个 Android 页面
 class MainActivity: Activity(){
@@ -42,7 +43,46 @@ class MainActivity: Activity(){
     fun initUI(){
         val chatButton: Button = findViewById(R.id.ChatButton)
         chatButton.setOnClickListener {
-            startActivity(Intent(this, ChatActivity::class.java))
+            //必要参数
+            NavTalkManager.license = "sk_navtalk_tcDB9SaqHKKe7pXc5tyt0Z7aNB0SgI3R"
+            NavTalkManager.characterName = "Freya"
+            //选填参数
+            NavTalkManager.isOrNotSaveHistoryChatMessages = true
+            //选填参数-function call
+            val functions = listOf(
+                mapOf(
+                    "type" to "function",
+                    "name" to "function_call_close_talk",
+                    "description" to "Please trigger this method when you receive a message or when the conversation is closed.",
+                    "parameters" to mapOf(
+                        "type" to "object",
+                        "properties" to mapOf(
+                            "userInput" to mapOf(
+                                "type" to "string",
+                                "description" to "Raw user request content to be processed"
+                            )
+                        ),
+                        "required" to listOf("userInput")
+                    )
+                )
+            )
+            val functionsJsonString = org.json.JSONObject(mapOf("functions" to functions)).getJSONArray("functions").toString()
+            NavTalkManager.functionsJsonString = functionsJsonString
+            NavTalkManager.functionCallListener = object : FunctionCallListener{
+                override fun onFunctionCalled(message: String) {
+                    println("Function_Call:${message}")
+                    val jsonObject = JSONObject(message)
+                    val data = jsonObject.optJSONObject("data")
+                    val function_name = data.getString("function_name")
+                    if (function_name == "function_call_close_talk"){
+                        ChatActivity. closeCall()
+                    }
+                }
+            }
+
+
+            //展示页面
+            NavTalkManager.showChatActivity(this)
         }
 
     }
