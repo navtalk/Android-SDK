@@ -39,7 +39,7 @@ dependencyResolutionManagement {
 2.Add the dependency in your app/build.gradle.kts:
 ```kotlin
 dependencies {
-    implementation("com.github.navtalk:Android-SDK:1.0.4")
+    implementation("com.github.navtalk:Android-SDK:1.0.5")
 }
 ```
 
@@ -131,7 +131,7 @@ NavTalkManager.functionsJsonString = functionsJsonString
     
 6.Navigate to the chat interface in your Activity (required)
   ```kotlin
-  NavTalkManager.showChatActivity(context)
+  NavTalkManager.showChatActivity(this)
  ```
   
 ## Specific usage demo

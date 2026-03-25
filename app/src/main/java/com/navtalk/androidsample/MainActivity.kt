@@ -79,8 +79,6 @@ class MainActivity: Activity(){
                     }
                 }
             }
-
-
             //展示页面
             NavTalkManager.showChatActivity(this)
         }
