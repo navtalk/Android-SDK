@@ -39,9 +39,27 @@ dependencyResolutionManagement {
 2.Add the dependency in your app/build.gradle.kts:
 ```kotlin
 dependencies {
-    implementation("com.github.navtalk:Android-SDK:1.0.3")
+    implementation("com.github.navtalk:Android-SDK:1.0.4")
 }
 ```
+
+3.Config NavTalk ChatActivity(required):
+```text
+  3.1.Add ChatActivity in AndroidManifest.xml
+    <activity
+        android:name="com.navtalk.navtalk_sdk.ChatActivity"
+        android:exported="true" />
+        
+  3.2.Create a theme for ChatActivity in res/values/themes.xml
+    <style name="Theme.ChatActivity" parent="Theme.AppCompat.Light.NoActionBar" />
+    
+  3.3.Set ChatActivity's theme in AndroidManifest.xml
+    <activity
+         android:name="com.navtalk.navtalk_sdk.ChatActivity"
+         android:exported="true"
+         android:theme="@style/Theme.ChatActivity" />
+```
+  
 
 ## Usage
 ![Chat Interface Screenshot](showImage/NavTalk_First_Shot.PNG)
