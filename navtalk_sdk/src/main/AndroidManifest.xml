@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.navtalk.navtalk_sdk">
+
+    <!-- SDK 功能需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- 摄像头特性声明 -->
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+
+    <application>
+        <!-- SDK 内部可能需要的 Service 或 Provider 可以写在这里 -->
+        <!-- 例如 WebRTC / 背景服务等 -->
+        <!-- <service android:name=".SingleClass.ChatService"/> -->
+    </application>
+
+</manifest>

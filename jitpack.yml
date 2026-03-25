@@ -1,0 +1,9 @@
+#指定JDK: Android Gradle Plugin 8+ 基本都需要 JDK17
+jdk:
+  - openjdk17
+#权限（保险项）：防止 gradlew 没执行权限（JitPack 常见坑）
+before_install:
+  - chmod +x gradlew
+#执行 publish
+install:
+  - ./gradlew clean publishToMavenLocal

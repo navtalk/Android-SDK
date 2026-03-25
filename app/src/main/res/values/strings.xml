@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NavTalk</string>
+    <string name="root_activity_name">root_activity</string>
+</resources>
