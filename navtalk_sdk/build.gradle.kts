@@ -86,7 +86,7 @@ extensions.configure<com.android.build.api.dsl.LibraryExtension> {
 afterEvaluate {
     extensions.configure<org.gradle.api.publish.PublishingExtension>("publishing") {
         //当前依赖库的版本号，方便我们开发者自己查看，同时发布到 MavenLocal 也是用的这个版本号（Jitpack不会使用到）
-        val versionName = "1.0.7"
+        val versionName = "1.0.8"
         publications {
             create<MavenPublication>("release") {
                 //自定义属性：这里头是artifacts的配置信息，不填会采用默认的
