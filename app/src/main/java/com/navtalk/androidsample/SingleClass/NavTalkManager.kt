@@ -13,9 +13,11 @@ interface FunctionCallListener {
 object NavTalkManager{
     //1.参数：
     //1.1.licens(必要参数)
-    var license: String = "sk_navtalk_tcDB9SaqHKKe7pXc5tyt0Z7aNB0SgI3R"
+    var license: String = ""
     //1.2.characterName(必要参数)
-    var characterName: String = "Freya"
+    var characterName: String = ""
+    //characterId（必要参数: 和characterName二选一）
+    var characterId: String = ""
     //Avatar Image URL
     var avatar_image_url: String = ""
     //Avatar Provide Type Name
@@ -34,8 +36,8 @@ object NavTalkManager{
            Toasty.error(context, "Please enter the required license parameters first.", Toasty.LENGTH_SHORT,true).show()
            return
        }
-        if (characterName.count() <= 0){
-            Toasty.error(context, "Please enter the required characterName parameters first.", Toasty.LENGTH_SHORT,true).show()
+        if (characterName.count() <= 0 && characterId.count() <= 0){
+            Toasty.error(context, "Please enter the required characterName or characterId parameters first.", Toasty.LENGTH_SHORT,true).show()
             return
         }
         val intent = Intent(context, ChatActivity::class.java)

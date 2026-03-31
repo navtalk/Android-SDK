@@ -45,7 +45,8 @@ class MainActivity: Activity(){
         chatButton.setOnClickListener {
             //必要参数
             NavTalkManager.license = "sk_navtalk_tcDB9SaqHKKe7pXc5tyt0Z7aNB0SgI3R"
-            NavTalkManager.characterName = "Freya"
+            NavTalkManager.characterName = "Brain"
+            NavTalkManager.characterId = "faab967a08e1731076b39edd9538636f"
             //选填参数
             NavTalkManager.isOrNotSaveHistoryChatMessages = true
             //选填参数-function call

@@ -119,7 +119,12 @@ class ChatActivity : AppCompatActivity() {
 
     //2.获取Avatar详情
     fun fetchAvatarDetailInformation(){
-        val urlString = "https://api.navtalk.ai/api/open/v1/avatar/getByName?license=${NavTalkManager.license}&name=${NavTalkManager.characterName}"
+        var urlString = ""
+        if (NavTalkManager.characterId.length > 0){
+            urlString = "https://api.navtalk.ai/api/open/v1/avatar/detail?license=${NavTalkManager.license}&avatarId=${NavTalkManager.characterId}"
+        }else{
+            urlString = "https://api.navtalk.ai/api/open/v1/avatar/getByName?license=${NavTalkManager.license}&name=${NavTalkManager.characterName}"
+        }
         println("NavTalk-->Fetch Avatar Detail Information--urlString: ${urlString}")
         val client = OkHttpClient()
         val request = Request.Builder()

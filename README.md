@@ -69,12 +69,15 @@ dependencies {
   NavTalkManager.license = "*******"
 ```
 
-2.NavTalk Avatar Name (required)
+2.NavTalk Avatar Name Or Id (required)
 ```kotlin
   NavTalkManager.characterName = "*******"
+  NavTalkManager.characterId = "*******"
 ```
+  - Note: name: The name of the digital human character (query method 1)
+  - Note: avatarId: Direct avatar ID for precise lookup (query method 2, higher priority)
+  - Note: Query Priority: If both avatarId and name are provided, avatarId takes precedence.
   - Note: When the system role provider is 11Labs, function call and image recognition are not supported.
-
   - Custom roles support function call and image recognition only when OpenAIRealtime is selected.
 
 3.Save chat history locally (optional)
