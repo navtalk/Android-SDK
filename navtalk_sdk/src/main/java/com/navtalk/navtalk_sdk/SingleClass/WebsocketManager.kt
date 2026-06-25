@@ -20,6 +20,7 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 
+
 enum class SocketStatus { NOT_CONNECTED, CONNECTING, CONNECTED }
 
 object WebsocketManager{
@@ -33,6 +34,8 @@ object WebsocketManager{
     var appContext: Context? = null
     //保存用户的问题和AI的回答
     var allUserAndAIMessages: MutableList<Map<String, Any>> = mutableListOf()
+    //监听音频设备
+    private var audioDeviceCallback: AudioDeviceCallback? = null
 
     //2.开始连接Socket
     fun startToConnectWebSocketOfNavTalk(context: Context){
