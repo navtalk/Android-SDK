@@ -142,7 +142,7 @@ class ChatActivity : AppCompatActivity() {
                 try {
                     val json = JSONObject(body)
                     val data = json.getJSONObject("data")
-                    val imageURL = data.getString("url")
+                    val imageURL = data.getString("thumbnailUrl")
                     val providerName = data.getString("providerName")
                     println("NavTalk-->Fetch Avatar Detail Information--imageURL=${imageURL},  providerName=${providerName}")
                     if (imageURL.length > 0 && providerName.length > 0){

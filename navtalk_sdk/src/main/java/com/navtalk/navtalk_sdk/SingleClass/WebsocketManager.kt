@@ -44,6 +44,9 @@ object WebsocketManager{
             return
         }
 
+        //开始监听耳机连接事件
+        startAudioRouteMonitor(context)
+
         socketStatus = SocketStatus.CONNECTING
         NotificationCenter.post("WebSocketStatusIsChanged","")
 
@@ -261,5 +264,75 @@ object WebsocketManager{
     fun disconnectWebSocket(){
         webSocket?.close(1000, "Normal Closure")
         webSocket = null
+    }
+    //7.监听耳机连接事件
+    fun startAudioRouteMonitor(context: Context) {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+        applyAudioRoute(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && audioDeviceCallback == null) {
+            audioDeviceCallback = object : AudioDeviceCallback() {
+                override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>) {
+                    applyAudioRoute(context)
+                }
+
+                override fun onAudioDevicesRemoved(removedDevices: Array<out AudioDeviceInfo>) {
+                    applyAudioRoute(context)
+                }
+            }
+
+            audioManager.registerAudioDeviceCallback(
+                audioDeviceCallback,
+                Handler(Looper.getMainLooper())
+            )
+        }
+    }
+    private fun applyAudioRoute(context: Context) {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val devices = audioManager.availableCommunicationDevices
+
+            val bluetoothDevice = devices.firstOrNull {
+                it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
+                        it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
+            }
+
+            if (bluetoothDevice != null) {
+                audioManager.setCommunicationDevice(bluetoothDevice)
+                println("NavTalk-->音频路由-->使用蓝牙耳机")
+            } else {
+                val speaker = devices.firstOrNull {
+                    it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+                }
+                speaker?.let {
+                    audioManager.setCommunicationDevice(it)
+                    println("NavTalk-->音频路由-->使用扬声器")
+                }
+            }
+        } else {
+            val hasBluetooth = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).any {
+                it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
+                        it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
+            }
+
+            audioManager.isSpeakerphoneOn = !hasBluetooth
+            println(
+                if (hasBluetooth)
+                    "NavTalk-->音频路由-->检测到蓝牙耳机"
+                else
+                    "NavTalk-->音频路由-->使用扬声器"
+            )
+        }
+    }
+    fun stopAudioRouteMonitor(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioDeviceCallback?.let {
+                audioManager.unregisterAudioDeviceCallback(it)
+            }
+            audioDeviceCallback = null
+        }
     }
 }
