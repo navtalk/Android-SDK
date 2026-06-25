@@ -39,7 +39,7 @@ dependencyResolutionManagement {
 2.Add the dependency in your app/build.gradle.kts:
 ```kotlin
 dependencies {
-    implementation("com.github.navtalk:Android-SDK:1.0.10")
+    implementation("com.github.navtalk:Android-SDK:1.0.11")
 }
 ```
 

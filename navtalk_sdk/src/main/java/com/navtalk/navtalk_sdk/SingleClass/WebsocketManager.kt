@@ -14,6 +14,12 @@ import okio.ByteString
 import org.json.JSONObject
 import java.net.URLEncoder
 
+import android.media.AudioDeviceCallback
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.os.Build
+import android.os.Handler
+
 enum class SocketStatus { NOT_CONNECTED, CONNECTING, CONNECTED }
 
 object WebsocketManager{
